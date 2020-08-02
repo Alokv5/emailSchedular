@@ -3,6 +3,7 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from matterhook import Webhook
 
 import pymysql
 
@@ -48,6 +49,14 @@ class SendEmails(object):
             raise Exception("Sorry we could'nt send email for meeting_id {}".format(meeting_id))
 
 
+def call_matter_hook(channel_name):
+    try:
+        #getdata from channel table
+        mwh = Webhook('https://rnd.nattycb.com', 'x5m5u4ej6fb1mf151pqysw4fic')
+        mwh.send(message='meeting reminder', channel=channel_name, username='schedule_meeting',icon_url='https://rnd.nattycb.com/static/images/favicon/favicon-32x32.png')
+    except Exception as e:
+        print("exception occurred while calling webhook",e)
+
 def get_table_rows():
     try:
         db = pymysql.connect("localhost", "mattermost", "RFzWV5kdJl", "mattermost")
@@ -74,9 +83,28 @@ def get_table_rows():
                 if len(result) > 0:
                     userName = result[0]
                     body['userName'] = userName[0]
-                    SendEmails().send_email(userEmail, body)
+                    if row[5] is not None:
+                        channel_name_list = row[5].split(",")
+                        for channel_id in channel_name_list:
+                            try:
+                                query_channel_name = "SELECT Name FROM meetings.channels where Id = ""\"{}\"".format(channel_id.strip())
+                                cursor.execute(query_channel_name)
+                                res =cursor.fetchone()
+                                if res is not None:
+                                    call_matter_hook(res[0])
+                            except Exception as e:
+                                print("unable to call matter hook")
+                    try:
+                        SendEmails().send_email(userEmail, body)
+                    except Exception as e:
+                        print("error sending email")
                 else:
-                    SendEmails().send_email(userEmail, body)
+                    try:
+                        SendEmails().send_email(userEmail, body)
+                    except Exception as e:
+                        print("error sending email without user name")
+        else:
+            print("No meeting scheduled")
     except Exception as e:
         print("Error in getting data and sending email==> ", e)
 
