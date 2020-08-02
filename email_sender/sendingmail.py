@@ -2,7 +2,7 @@
 
 import pymysql
 
-from email_sender.MailSenderUtility import SendEmails
+from .MailSenderUtility import SendEmails
 
 
 def get_table_rows():
