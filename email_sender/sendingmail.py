@@ -7,7 +7,7 @@ from email_sender.MailSenderUtility import SendEmails
 
 def get_table_rows():
     try:
-        db = pymysql.connect("localhost", "root", "alok@1990", "meetings")
+        db = pymysql.connect("localhost", "root", "mostuser", "mattermost")
 
         # prepare a cursor object using cursor() method
         cursor = db.cursor()
