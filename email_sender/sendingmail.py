@@ -37,4 +37,9 @@ def get_table_rows():
         print("Error in getting data and sending email==> ", e)
 
 
-get_table_rows()
+while True:
+    try:
+        print("schedular started")
+        get_table_rows()
+    except Exception as e:
+        print("Exception in schedular")
