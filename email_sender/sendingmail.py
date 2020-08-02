@@ -50,7 +50,7 @@ class SendEmails(object):
 
 def get_table_rows():
     try:
-        db = pymysql.connect("localhost", "root", "mostuser", "mattermost")
+        db = pymysql.connect("localhost", "mattermost", "RFzWV5kdJl", "mattermost")
 
         # prepare a cursor object using cursor() method
         cursor = db.cursor()
