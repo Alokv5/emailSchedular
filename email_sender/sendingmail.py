@@ -48,7 +48,7 @@ class SendEmails(object):
             server.starttls()
             server.ehlo()
             server.login(username, password)
-            server.sendmail(sender, ",".join(email_list), msg.as_string())
+            server.sendmail(sender, email_list, msg.as_string())
             server.quit()
         except Exception as e:
             print("exception in mail ", e)
