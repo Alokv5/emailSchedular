@@ -12,7 +12,7 @@ import requests
 
 class SendEmails(object):
     def __init__(self):
-        self.db = pymysql.connect("localhost", "mattermost", "RFzWV5kdJl", "mattermost")
+        self.db = pymysql.connect("localhost", "mattermost", "RFzWV5kdJl", "meetings")
 
     def send_email(self, recipients, body):
         try:
@@ -60,12 +60,13 @@ class SendEmails(object):
 
             payload = {"channel_id": channel_id, "message": "",
                        "props": {"type": "meeting_reminder", "meeting_id": meeting_id,
-                                 "meeting_name": "meeting_reminder", "startdate": body['start_time']}}
+                                 "meeting_name": body['title'].strip(), "startdate": body['start_time']}}
 
             headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer 4bqmzeh9cirn7bby4jtpgatwjc'
             }
+            print(payload)
 
             response = requests.request("POST", url, headers=headers, data=json.dumps(payload))
 
