@@ -12,7 +12,7 @@ import requests
 
 class SendEmails(object):
     def __init__(self):
-        self.db = pymysql.connect("localhost", "mattermost", "RFzWV5kdJl", "meetings")
+        self.db = pymysql.connect("localhost", "mattermost", "RFzWV5kdJl", "mattermost")
 
     def send_email(self, recipients, body):
         try:
@@ -51,6 +51,7 @@ class SendEmails(object):
             server.sendmail(sender, ",".join(email_list), msg.as_string())
             server.quit()
         except Exception as e:
+            print("exception in mail ", e)
             raise Exception("Sorry we could'nt send email for meeting_id {}".format(meeting_id))
 
     def call_matter_hook(self, body, channel_id):
