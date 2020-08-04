@@ -12,7 +12,7 @@ import requests
 
 class SendEmails(object):
     def __init__(self):
-        self.db = pymysql.connect("localhost", "root", "alok@1990", "meetings")
+        self.db = pymysql.connect("localhost", "mattermost", "RFzWV5kdJl", "mattermost")
 
     def send_email(self, recipients, body):
         try:
