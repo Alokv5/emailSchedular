@@ -128,7 +128,13 @@ class SendEmails(object):
 while True:
     try:
         print("schedular started")
-        SendEmails().get_table_rows()
+        send_mail = SendEmails()
+        send_mail.get_table_rows()
+        cursor = send_mail.db.cursor()
+        try:
+            cursor.execute("delete from Posts where UserId='gky8bbnept88p83jijk4iswbbo'")
+        except Exception as e:
+            print("Error while deleting id", e)
         time.sleep(60)
 
     except Exception as e:
